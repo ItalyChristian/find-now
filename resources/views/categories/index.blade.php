@@ -8,6 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <livewire:panel.category.create />
+            <livewire:panel.category.all />
         </div>
     </div>
 </x-app-layout>
