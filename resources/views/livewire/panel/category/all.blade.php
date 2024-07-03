@@ -3,8 +3,11 @@
         <x-table :$headers :$rows filter paginate id="users">
 
             @interact('column_action', $row)
-                <x-button.circle color="red" icon="trash" wire:click="delete('{{ $row->id }}')" />
-                <x-button.circle color="blue" icon="pencil-square" wire:click="update('{{ $row->id }}')" />
+                <div class=" flex gap-4 ">
+                    <livewire:panel.category.delete :key="$row->pluck('id')->join('-')" :category="$row" />
+
+                    <x-button.circle color="blue" icon="pencil-square" wire:click="update('{{ $row->id }}')" />
+                </div>
             @endinteract
         </x-table>
     </div>

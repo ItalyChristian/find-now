@@ -17,8 +17,13 @@ class All extends Component
 
     public ?string $search = null;
 
-
     #[On('category:created')]
+    #[On('category:deleted')]
+    
+    public function mount(): void
+    {
+        $this->resetPage();
+    }
     public function render(): View
     {
         return view('livewire.panel.category.all', [
