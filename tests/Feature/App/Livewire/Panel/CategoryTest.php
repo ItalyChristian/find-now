@@ -37,7 +37,17 @@ it('check if open modal in click the component', function () {
         ->toggle('modal', true)
         ->assertSeeText('Cadastrar Categoria');
 });
-todo('check is message error in create category');
+it('check is message error in create category empty', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    Livewire::test(Create::class)
+        ->assertSet('name', '')
+        ->call('store')
+        ->assertHasErrors();
+});
 todo('Check component list all update exist in the page');
 // Update
 todo('check open dialog in click component for update category');
