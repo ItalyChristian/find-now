@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Panel\Category\{All, Create};
+use App\Models\Category;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -65,7 +66,21 @@ it('check category is register and dispatch event for component list all categor
         'name' => 'Category Test'
     ]);
 });
-todo('check component list all categories each categories display page');
+it('check display categories', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    Category::create(['name' => 'Category One']);
+    Category::create(['name' => 'Category Two']);
+
+    $this->assertDatabaseCount('categories', 2);
+
+    Livewire::test(All::class)
+        ->assertSee('Category One')
+        ->assertSee('Category Two');
+});
 // Update
 todo('Check component update exist in the page');
 todo('check open dialog in click component for update category');

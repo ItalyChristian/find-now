@@ -21,11 +21,7 @@ class All extends Component
     #[On('category:deleted')]
     #[On('category:update')]
 
-    public function mount(): void
-    {
-        $this->resetPage();
-    }
-    public function render(): View
+    public function render()
     {
         return view('livewire.panel.category.all', [
             'rows' =>
