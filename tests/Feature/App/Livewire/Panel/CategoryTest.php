@@ -44,18 +44,36 @@ it('check is message error in create category empty', function () {
         ->assertOK();
 
     Livewire::test(Create::class)
-        ->assertSet('name', '')
+        ->set('name', 'asf')
         ->call('store')
         ->assertHasErrors();
 });
-todo('Check component list all update exist in the page');
+it('check category is register and dispatch event for component list all categories', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    Livewire::test(Create::class)
+        ->toggle('modal', true)
+        ->set('name', 'Category Test')
+        ->call('store')
+        ->assertDispatched('category:created')
+        ->toggle('modal', false);
+
+    $this->assertDatabaseHas('categories', [
+        'name' => 'Category Test'
+    ]);
+});
+todo('check component list all categories each categories display page');
 // Update
+todo('Check component update exist in the page');
 todo('check open dialog in click component for update category');
 todo('check is message success in create category');
 todo('check is message error in update category');
 todo('check is message success in update category');
 // Delete
-todo('Check component list all delete exist in the page');
+todo('Check component delete exist in the page');
 todo('check open dialog in click component for delete category');
 todo('check is message error in delete category');
 todo('check is message success in delete category');
