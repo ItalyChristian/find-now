@@ -96,7 +96,6 @@ it('Check component update exist in the page', function () {
         ->assertSee('Category Two')
         ->assertSeeLivewire(Update::class);
 });
-
 it('check if open modal in click button for update category', function () {
 
     $this->actingAs(User::factory()->create())
@@ -167,7 +166,7 @@ it('Check component delete exist in the page', function () {
         ->assertSee('Category Two')
         ->assertSeeLivewire(Delete::class);
 });
-todo('check open dialog in click component for delete category', function () {
+it('check register deleted in method confirmed', function () {
     $this->actingAs(User::factory()->create())
         ->get('/panel/categories')
         ->assertOK();
@@ -181,7 +180,9 @@ todo('check open dialog in click component for delete category', function () {
 
     Livewire::test(Delete::class, ['category' => $category])
         ->call('delete')
-        ->call('confirmed');
+        ->call('confirmed', 'Categoria deletada com sucesso');
+
+    $this->assertDatabaseCount('categories', 0);
 });
 todo('check is message error in delete category');
 todo('check is message success in delete category');
