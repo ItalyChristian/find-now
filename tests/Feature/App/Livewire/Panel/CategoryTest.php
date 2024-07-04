@@ -97,7 +97,22 @@ it('Check component update exist in the page', function () {
         ->assertSeeLivewire(Update::class);
 });
 
-todo('check is message success in create category');
+it('check if open modal in click button for update category', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    $category = Category::create(['name' => 'Category One']);
+
+    Livewire::test(All::class)
+        ->assertSee('Category One')
+        ->assertSeeLivewire(Update::class);
+
+    Livewire::test(Update::class, ['category' => $category])
+        ->toggle('modal', true)
+        ->assertSeeText('Editar Categoria');
+});
 todo('check is message error in update category');
 todo('check is message success in update category');
 // Delete
