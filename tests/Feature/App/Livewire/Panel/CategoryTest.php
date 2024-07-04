@@ -130,7 +130,28 @@ it('check is message error in update category', function () {
         ->call('update')
         ->assertHasErrors();
 });
-todo('check is message success in update category');
+it('check is message success in update category', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    $category = Category::create(['name' => 'Category One']);
+
+    Livewire::test(All::class)
+        ->assertSee('Category One')
+        ->assertSeeLivewire(Update::class);
+
+    Livewire::test(Update::class, ['category' => $category])
+        ->toggle('modal', true)
+        ->set('name', 'Category Two')
+        ->call('update')
+        ->toggle('modal', false);
+
+    $this->assertDatabaseHas('categories', [
+        'name' => 'Category Two'
+    ]);
+});
 // Delete
 it('Check component delete exist in the page', function () {
 
