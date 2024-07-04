@@ -4,9 +4,8 @@
 
             @interact('column_action', $row)
                 <div class=" flex gap-4 ">
-                    <livewire:panel.category.delete :key="$row->pluck('id')->join('-')" :category="$row" />
-
-                    <x-button.circle color="blue" icon="pencil-square" wire:click="update('{{ $row->id }}')" />
+                    <livewire:panel.category.delete :key="$row->pluck('id')->join('-') . '-' . time()" :category="$row" />
+                    <livewire:panel.category.update :key="$row->pluck('id')->join('-') . '-' . time()" :category="$row" />
                 </div>
             @endinteract
         </x-table>

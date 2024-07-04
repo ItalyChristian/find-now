@@ -19,7 +19,8 @@ class All extends Component
 
     #[On('category:created')]
     #[On('category:deleted')]
-    
+    #[On('category:update')]
+
     public function mount(): void
     {
         $this->resetPage();
@@ -34,6 +35,7 @@ class All extends Component
                 })
                 ->paginate($this->quantity)
                 ->withQueryString(),
+
             'headers' => [
                 ['index' => 'id', 'label' => '#'],
                 ['index' => 'name', 'label' => 'Member'],

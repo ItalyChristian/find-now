@@ -2,19 +2,25 @@
 
 namespace App\Livewire\Panel\Category;
 
-use App\Models\Category;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\Category;
 use TallStackUi\Traits\Interactions;
 
-class Create extends Component
+class Update extends Component
 {
     use Interactions;
+
+    public ?Category $category;
 
     public ?bool $modal = false;
 
     public ?string $name = null;
+
+    public function mount(Category $category): void
+    {
+        $this->name = $category->name;
+    }
 
     public function rules(): array
     {
@@ -31,19 +37,18 @@ class Create extends Component
             'name.min' => 'O campo nome deve ter no minimo 6 caracteres.',
         ];
     }
-
-    public function store(): void
+    public function update(): void
     {
 
         $validated = $this->validate();
 
-        Category::create($validated);
-        $this->toast()->success('Categoria cadastrada com sucesso!')->send();
-        $this->dispatch('category:created');
+        $this->category->update($validated);
+        $this->toast()->success('Categoria editada com sucesso!')->send();
+        $this->dispatch('category:update');
         $this->reset();
     }
     public function render(): View
     {
-        return view('livewire.panel.category.create');
+        return view('livewire.panel.category.update');
     }
 }
