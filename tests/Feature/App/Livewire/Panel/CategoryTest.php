@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Panel\Category\{All};
 use App\Models\User;
 
 it('Check if route exists and user is logged in', function () {
@@ -9,7 +10,13 @@ it('Check if route exists and user is logged in', function () {
     $this->get('/panel/categories')
         ->assertOk();
 });
-todo('Check component list all categories exist in the page');
+it('Check component list all categories exist in the page', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK()
+        ->assertSeeLivewire(All::class);
+});
 todo('check component list all categories is not empty');
 // Create
 todo('check component create category exist in the page');
