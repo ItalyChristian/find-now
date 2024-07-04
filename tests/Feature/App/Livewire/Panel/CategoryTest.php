@@ -184,5 +184,3 @@ it('check register deleted in method confirmed', function () {
 
     $this->assertDatabaseCount('categories', 0);
 });
-todo('check is message error in delete category');
-todo('check is message success in delete category');
