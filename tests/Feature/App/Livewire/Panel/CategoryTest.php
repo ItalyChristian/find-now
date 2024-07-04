@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Panel\Category\{All, Create};
+use App\Livewire\Panel\Category\{All, Create, Delete};
 use App\Models\Category;
 use App\Models\User;
 use Livewire\Livewire;
@@ -88,7 +88,20 @@ todo('check is message success in create category');
 todo('check is message error in update category');
 todo('check is message success in update category');
 // Delete
-todo('Check component delete exist in the page');
-todo('check open dialog in click component for delete category');
+it('Check component delete exist in the page', function () {
+
+    $this->actingAs(User::factory()->create())
+        ->get('/panel/categories')
+        ->assertOK();
+
+    Category::create(['name' => 'Category One']);
+    Category::create(['name' => 'Category Two']);
+
+    Livewire::test(All::class)
+        ->assertSee('Category One')
+        ->assertSee('Category Two')
+        ->assertSeeLivewire(Delete::class);
+});
+it('check open dialog in click component for delete category');
 todo('check is message error in delete category');
 todo('check is message success in delete category');
