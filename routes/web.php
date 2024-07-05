@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('panel')->group(function () {
 
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 })->middleware('auth');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
