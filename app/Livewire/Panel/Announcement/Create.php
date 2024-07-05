@@ -9,13 +9,13 @@ use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Finder\SplFileInfo;
+use Illuminate\Support\Facades\Auth;
+use TallStackUi\Traits\Interactions;
 
 class Create extends Component
 {
     use WithFileUploads;
+    use Interactions;
 
     public ?bool $modal = false;
 
@@ -68,15 +68,29 @@ class Create extends Component
             return;
         }
 
-
         $file = Arr::flatten(array_merge($this->backup, [$this->files]));
-
 
         $this->files = collect($file)->unique(fn (UploadedFile $item) => $item->getClientOriginalName())->toArray();
     }
-    public function store()
+    public function store(): void
     {
-        dd($this->validate());
+        $validated = $this->validate();
+
+        $announcement = Auth::user()->announcements()->create(Arr::except($validated, ['files']));
+
+        if (count($this->files) > 0) {
+
+            collect($this->files)->map(function ($file) use ($announcement) {
+
+                $filename = str_replace(' ', '', date('YmdHi') . $file->getClientOriginalName());
+                $imagePath = $file->storeAs('public/images', $filename);
+                $announcement->images()->create(['path' => $imagePath]);
+            });
+        }
+
+        $this->toast()->success('Anúncio cadastrado com sucesso!')->send();
+        $this->dispatch('announcement:created');
+        $this->reset();
     }
     public function getAllCategories(): ?Object
     {
