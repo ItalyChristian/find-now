@@ -7,6 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h1 class="hidden mb-12 text-4xl font-bold text-gray-800 dark:text-gray-200">Meus anúncios</h1>
-            <x-empty-announcement />
+
+            <livewire:panel.announcement.all />
+        </div>
 </x-app-layout>
