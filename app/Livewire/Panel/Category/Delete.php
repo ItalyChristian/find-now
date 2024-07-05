@@ -24,10 +24,7 @@ class Delete extends Component
     }
     public function confirmed(string $message): void
     {
-        if (empty($this->category)) {
 
-            throw 'Error in delete category';
-        }
         $this->category->delete();
         $this->dispatch('category:deleted');
         $this->dialog()->success('Sucesso', $message)->send();
