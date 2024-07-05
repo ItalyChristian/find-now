@@ -5,9 +5,7 @@
         Criar anúncio
     </a>
     <x-modal title="Cadastrar Anuncio" size="5xl" blur wire persistent>
-        <div class="mb-4">
-            <x-alert icon="cog" color="red" text="Os itens com (*) são obrigatórios" />
-        </div>
+
         <form wire:submit="store">
 
             <div class="mb-4">

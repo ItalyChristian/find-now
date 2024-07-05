@@ -28,7 +28,34 @@ class Create extends Component
 
     public $backup = [];
 
-
+    public function rules(): array
+    {
+        return [
+            'title' => 'required|min:6|max:255|string',
+            'description' => 'required|min:6|max:255|string',
+            'category_id' => 'required|int',
+            'method_receipt' => 'required|string',
+            'price' => 'required|numeric',
+            'files.*' => 'nullable|image|max:2024'
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'O campo nome é obrigatório.',
+            'title.string' => 'O campo nome deve ser uma string.',
+            'title.max' => 'O campo nome deve ter menos de 255 caracteres.',
+            'title.min' => 'O campo nome deve ter no minimo 6 caracteres.',
+            'description.required' => 'O campo descrição é obrigatório.',
+            'description.string' => 'O campo descrição deve ser uma string.',
+            'description.max' => 'O campo descrição deve ter menos de 255 caracteres.',
+            'description.min' => 'O campo descrição deve ter no minimo 6 caracteres.',
+            'category_id.required' => 'O campo categoria é obrigatório.',
+            'method_receipt.required' => 'O campo forma de cobrança é obrigatório.',
+            'price.required' => 'O campo preço é obrigatório.',
+            'price.numeric' => 'O campo preço deve ser um número.',
+        ];
+    }
     public function updatingFiles(): void
     {
 
@@ -47,7 +74,10 @@ class Create extends Component
 
         $this->files = collect($file)->unique(fn (UploadedFile $item) => $item->getClientOriginalName())->toArray();
     }
-
+    public function store()
+    {
+        dd($this->validate());
+    }
     public function getAllCategories(): ?Object
     {
         return Category::all();
