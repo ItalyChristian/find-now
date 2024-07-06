@@ -2,6 +2,7 @@
 
 use App\Livewire\Panel\Announcement\{All, Create, Delete, Update};
 use App\Models\Announcement;
+use App\Models\Category;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -53,21 +54,32 @@ it('check is message error in create announcement empty', function () {
         ->call('store')
         ->assertHasErrors();
 });
-todo('check announcement is register and dispatch event for component list all categories', function () {
-
-    $this->actingAs(User::factory()->create())
+it('check announcement is register no passed photos and dispatch event for component list all categories', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Livewire::test(Create::class)
+    Category::create(['name' => 'Category One']);
+
+    Livewire::actingAs($user)
+        ->test(Create::class)
         ->toggle('modal', true)
-        ->set('name', 'announcement Test')
+        ->set('title', 'Announcement Teste')
+        ->set('description', 'Description Teste')
+        ->set('category_id', 1)
+        ->set('method_receipt', 'recevied')
+        ->set('price', '10.30')
         ->call('store')
         ->assertDispatched('announcement:created')
         ->toggle('modal', false);
 
-    $this->assertDatabaseHas('categories', [
-        'name' => 'announcement Test'
+    $this->assertDatabaseHas('announcements', [
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'category_id' => 1,
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
     ]);
 });
 todo('check display categories', function () {

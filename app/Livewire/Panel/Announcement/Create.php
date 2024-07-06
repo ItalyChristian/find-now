@@ -75,7 +75,6 @@ class Create extends Component
     public function store(): void
     {
         $validated = $this->validate();
-
         $announcement = Auth::user()->announcements()->create(Arr::except($validated, ['files']));
 
         if (count($this->files) > 0) {
