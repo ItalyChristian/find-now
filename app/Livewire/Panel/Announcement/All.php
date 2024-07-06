@@ -10,7 +10,6 @@ use Livewire\Component;
 class All extends Component
 {
 
-
     private function getAllAnnouncements(): ?Object
     {
         return Auth::user()->announcements()->with('category', 'images', 'user.address')
@@ -23,6 +22,7 @@ class All extends Component
                     'price' => $announcement->price,
                     'category' => $announcement->category->name,
                     'user' => $announcement->user->name,
+                    'status' => $announcement->status,
                     'images' => $announcement->images->map(function ($image) {
                         return [
                             'images_id' => $image->images_id,
@@ -46,10 +46,20 @@ class All extends Component
 
     #[On('announcement:created')]
     #[On('announcement:deleted')]
+    #[On('announcement:updated')]
     public function render(): View
     {
         return view('livewire.panel.announcement.all', [
-            'announcements' => $this->getAllAnnouncements()
+            'rows' => $this->getAllAnnouncements(),
+            'headers' => [
+                ['index' => 'id', 'label' => '#'],
+                ['index' => 'title', 'label' => 'Titulo'],
+                ['index' => 'description', 'label' => 'Descrição'],
+                ['index' => 'price', 'label' => 'Preço'],
+                ['index' => 'category', 'label' => 'Categoria'],
+                ['index' => 'status', 'label' => 'Status'],
+                ['index' => 'action', 'label' => 'Actions'],
+            ]
         ]);
     }
 }

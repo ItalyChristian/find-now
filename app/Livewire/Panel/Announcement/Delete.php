@@ -32,6 +32,7 @@ class Delete extends Component
         if (count($this->announcement->images) > 0) {
 
             $this->announcement->images->map(fn ($image) => Storage::delete($image->path));
+            $this->announcement->images()->delete();
         }
 
         $this->announcement->delete();

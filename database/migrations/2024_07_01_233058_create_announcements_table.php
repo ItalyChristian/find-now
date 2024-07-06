@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained();
             $table->string('title');
             $table->text('description');
-            $table->float('price');
+            $table->decimal('price', total: 8, places: 2);
             $table->string('method_receipt');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
