@@ -5,6 +5,7 @@ use App\Models\Announcement;
 use App\Models\Category;
 use App\Models\User;
 use Livewire\Livewire;
+use TallStackUi\View\Components\Dropdown\Items;
 
 it('Check if route exists and user is logged in', function () {
 
@@ -242,22 +243,33 @@ it('Check component delete exist in the page', function () {
         ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Delete::class);
 });
-todo('check register deleted in method confirmed', function () {
+it('check register deleted in method confirmed', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $announcement = Announcement::create(['name' => 'announcement One']);
+    $announcement = Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
+
 
     Livewire::test(All::class)
-        ->assertSee('announcement One')
+        ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Delete::class);
 
 
-    Livewire::test(Delete::class, ['announcement' => $announcement])
+    Livewire::test(Delete::class, ['announcement_id' => $announcement->id])
         ->call('delete')
-        ->call('confirmed', 'Categoria deletada com sucesso');
+        ->call('confirmed', 'Anuncio deletada com sucesso');
 
-    $this->assertDatabaseCount('categories', 0);
+    $this->assertDatabaseCount('announcements', 0);
 });
