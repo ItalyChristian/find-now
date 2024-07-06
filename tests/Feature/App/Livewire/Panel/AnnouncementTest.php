@@ -151,20 +151,35 @@ it('check if open modal in click button for update announcement', function () {
         ->toggle('modal', true)
         ->assertSeeText('Editar Anuncio');
 });
-todo('check is message error in update announcement', function () {
+it('check is message error in update announcement', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $announcement = Announcement::create(['name' => 'announcement One']);
+    $announcement = Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
 
     Livewire::test(All::class)
-        ->assertSee('announcement One')
+        ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Update::class);
 
-    Livewire::test(Update::class, ['announcement' => $announcement])
-        ->set('name', '')
+    Livewire::test(Update::class, ['announcement_id' => $announcement->id])
+        ->set('title', '')
+        ->set('description', '')
+        ->set('category_id', '')
+        ->set('method_receipt', '')
+        ->set('price', '')
         ->call('update')
         ->assertHasErrors();
 });
