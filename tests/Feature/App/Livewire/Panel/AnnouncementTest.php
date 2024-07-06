@@ -183,26 +183,40 @@ it('check is message error in update announcement', function () {
         ->call('update')
         ->assertHasErrors();
 });
-todo('check is message success in update announcement', function () {
+it('check is message success in update announcement', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $announcement = Announcement::create(['name' => 'announcement One']);
+    $announcement = Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
 
     Livewire::test(All::class)
-        ->assertSee('announcement One')
+        ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Update::class);
 
-    Livewire::test(Update::class, ['announcement' => $announcement])
-        ->toggle('modal', true)
-        ->set('name', 'announcement Two')
+    Livewire::test(Update::class, ['announcement_id' => $announcement->id])
+        ->set('title', 'Announcement Teste -Updated')
+        ->set('description', 'Description Teste')
+        ->set('category_id', $category->id)
+        ->set('method_receipt', 'recevied')
+        ->set('price', 250.00)
         ->call('update')
         ->toggle('modal', false);
 
-    $this->assertDatabaseHas('categories', [
-        'name' => 'announcement Two'
+    $this->assertDatabaseHas('announcements', [
+        'title' => 'Announcement Teste -Updated'
     ]);
 });
 // Delete
