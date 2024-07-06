@@ -38,14 +38,18 @@ it('check if open modal in click the component', function () {
         ->toggle('modal', true)
         ->assertSeeText('Cadastrar Anuncio');
 });
-todo('check is message error in create announcement empty', function () {
+it('check is message error in create announcement empty', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
         ->assertOK();
 
     Livewire::test(Create::class)
-        ->set('name', 'asf')
+        ->set('title', '')
+        ->set('description', '')
+        ->set('category_id', '')
+        ->set('method_receipt', '')
+        ->set('price', '')
         ->call('store')
         ->assertHasErrors();
 });
