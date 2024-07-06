@@ -27,7 +27,7 @@ it('check component create announcement exist in the page', function () {
         ->assertOK()
         ->assertSeeLivewire(Create::class);
 });
-todo('check if open modal in click the component', function () {
+it('check if open modal in click the component', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
@@ -36,7 +36,7 @@ todo('check if open modal in click the component', function () {
 
     Livewire::test(Create::class)
         ->toggle('modal', true)
-        ->assertSeeText('Cadastrar Categoria');
+        ->assertSeeText('Cadastrar Anuncio');
 });
 todo('check is message error in create announcement empty', function () {
 
