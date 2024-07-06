@@ -20,7 +20,7 @@ it('Check component list all announcement exist in the page', function () {
         ->assertSeeLivewire(All::class);
 });
 // Create
-todo('check component create category exist in the page', function () {
+it('check component create announcement exist in the page', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
@@ -38,7 +38,7 @@ todo('check if open modal in click the component', function () {
         ->toggle('modal', true)
         ->assertSeeText('Cadastrar Categoria');
 });
-todo('check is message error in create category empty', function () {
+todo('check is message error in create announcement empty', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
@@ -49,7 +49,7 @@ todo('check is message error in create category empty', function () {
         ->call('store')
         ->assertHasErrors();
 });
-todo('check category is register and dispatch event for component list all categories', function () {
+todo('check announcement is register and dispatch event for component list all categories', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
@@ -57,13 +57,13 @@ todo('check category is register and dispatch event for component list all categ
 
     Livewire::test(Create::class)
         ->toggle('modal', true)
-        ->set('name', 'Category Test')
+        ->set('name', 'announcement Test')
         ->call('store')
-        ->assertDispatched('category:created')
+        ->assertDispatched('announcement:created')
         ->toggle('modal', false);
 
     $this->assertDatabaseHas('categories', [
-        'name' => 'Category Test'
+        'name' => 'announcement Test'
     ]);
 });
 todo('check display categories', function () {
@@ -72,14 +72,14 @@ todo('check display categories', function () {
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Announcement::create(['name' => 'Category One']);
-    Announcement::create(['name' => 'Category Two']);
+    Announcement::create(['name' => 'announcement One']);
+    Announcement::create(['name' => 'announcement Two']);
 
     $this->assertDatabaseCount('categories', 2);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
-        ->assertSee('Category Two');
+        ->assertSee('announcement One')
+        ->assertSee('announcement Two');
 });
 // Update
 todo('Check component update exist in the page', function () {
@@ -88,67 +88,67 @@ todo('Check component update exist in the page', function () {
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Announcement::create(['name' => 'Category One']);
-    Announcement::create(['name' => 'Category Two']);
+    Announcement::create(['name' => 'announcement One']);
+    Announcement::create(['name' => 'announcement Two']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
-        ->assertSee('Category Two')
+        ->assertSee('announcement One')
+        ->assertSee('announcement Two')
         ->assertSeeLivewire(Update::class);
 });
-todo('check if open modal in click button for update category', function () {
+todo('check if open modal in click button for update announcement', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $category = Announcement::create(['name' => 'Category One']);
+    $announcement = Announcement::create(['name' => 'announcement One']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
+        ->assertSee('announcement One')
         ->assertSeeLivewire(Update::class);
 
-    Livewire::test(Update::class, ['category' => $category])
+    Livewire::test(Update::class, ['announcement' => $announcement])
         ->toggle('modal', true)
         ->assertSeeText('Editar Categoria');
 });
-todo('check is message error in update category', function () {
+todo('check is message error in update announcement', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $category = Announcement::create(['name' => 'Category One']);
+    $announcement = Announcement::create(['name' => 'announcement One']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
+        ->assertSee('announcement One')
         ->assertSeeLivewire(Update::class);
 
-    Livewire::test(Update::class, ['category' => $category])
+    Livewire::test(Update::class, ['announcement' => $announcement])
         ->set('name', '')
         ->call('update')
         ->assertHasErrors();
 });
-todo('check is message success in update category', function () {
+todo('check is message success in update announcement', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $category = Announcement::create(['name' => 'Category One']);
+    $announcement = Announcement::create(['name' => 'announcement One']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
+        ->assertSee('announcement One')
         ->assertSeeLivewire(Update::class);
 
-    Livewire::test(Update::class, ['category' => $category])
+    Livewire::test(Update::class, ['announcement' => $announcement])
         ->toggle('modal', true)
-        ->set('name', 'Category Two')
+        ->set('name', 'announcement Two')
         ->call('update')
         ->toggle('modal', false);
 
     $this->assertDatabaseHas('categories', [
-        'name' => 'Category Two'
+        'name' => 'announcement Two'
     ]);
 });
 // Delete
@@ -158,12 +158,12 @@ todo('Check component delete exist in the page', function () {
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Announcement::create(['name' => 'Category One']);
-    Announcement::create(['name' => 'Category Two']);
+    Announcement::create(['name' => 'announcement One']);
+    Announcement::create(['name' => 'announcement Two']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
-        ->assertSee('Category Two')
+        ->assertSee('announcement One')
+        ->assertSee('announcement Two')
         ->assertSeeLivewire(Delete::class);
 });
 todo('check register deleted in method confirmed', function () {
@@ -171,14 +171,14 @@ todo('check register deleted in method confirmed', function () {
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $category = Announcement::create(['name' => 'Category One']);
+    $announcement = Announcement::create(['name' => 'announcement One']);
 
     Livewire::test(All::class)
-        ->assertSee('Category One')
+        ->assertSee('announcement One')
         ->assertSeeLivewire(Delete::class);
 
 
-    Livewire::test(Delete::class, ['category' => $category])
+    Livewire::test(Delete::class, ['announcement' => $announcement])
         ->call('delete')
         ->call('confirmed', 'Categoria deletada com sucesso');
 
