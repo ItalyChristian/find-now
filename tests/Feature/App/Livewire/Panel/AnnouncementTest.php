@@ -54,7 +54,8 @@ it('check is message error in create announcement empty', function () {
         ->call('store')
         ->assertHasErrors();
 });
-it('check announcement is register no passed photos and dispatch event for component list all categories', function () {
+it('check announcement is register no passed photos and dispatch event for component list all announcements', function () {
+
     $user = User::factory()->create();
     $this->actingAs($user)
         ->get('/panel/dashboard')
@@ -82,20 +83,28 @@ it('check announcement is register no passed photos and dispatch event for compo
         'price' => '10.30'
     ]);
 });
-todo('check display categories', function () {
+it('check display announcements', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user  = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Announcement::create(['name' => 'announcement One']);
-    Announcement::create(['name' => 'announcement Two']);
+    Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
 
-    $this->assertDatabaseCount('categories', 2);
+    $this->assertDatabaseCount('announcements', 1);
 
     Livewire::test(All::class)
-        ->assertSee('announcement One')
-        ->assertSee('announcement Two');
+        ->assertSee('Announcement Teste');
 });
 // Update
 todo('Check component update exist in the page', function () {
