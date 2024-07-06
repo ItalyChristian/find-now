@@ -12,7 +12,7 @@ it('Check if route exists and user is logged in', function () {
     $this->get('/panel/dashboard')
         ->assertOk();
 });
-todo('Check component list all categories exist in the page', function () {
+it('Check component list all announcement exist in the page', function () {
 
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
