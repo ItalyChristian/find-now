@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class All extends Component
 {
-    c
+    use WithPagination;
+
+    public $search = null;
+    public ?int $quantity = 10;
 
     #[On('category:created')]
     #[On('category:deleted')]
