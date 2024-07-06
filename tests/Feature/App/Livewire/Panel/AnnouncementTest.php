@@ -220,21 +220,30 @@ it('check is message success in update announcement', function () {
     ]);
 });
 // Delete
-todo('Check component delete exist in the page', function () {
+it('Check component delete exist in the page', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    Announcement::create(['name' => 'announcement One']);
-    Announcement::create(['name' => 'announcement Two']);
+    $announcement = Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
 
     Livewire::test(All::class)
-        ->assertSee('announcement One')
-        ->assertSee('announcement Two')
+        ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Delete::class);
 });
 todo('check register deleted in method confirmed', function () {
+
     $this->actingAs(User::factory()->create())
         ->get('/panel/dashboard')
         ->assertOK();
