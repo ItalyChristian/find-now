@@ -129,21 +129,27 @@ it('Check component update exist in the page', function () {
         ->assertSee('Announcement Teste')
         ->assertSeeLivewire(Update::class);
 });
-todo('check if open modal in click button for update announcement', function () {
+it('check if open modal in click button for update announcement', function () {
 
-    $this->actingAs(User::factory()->create())
+    $user  = User::factory()->create();
+    $category = Category::factory()->create();
+
+    $this->actingAs($user)
         ->get('/panel/dashboard')
         ->assertOK();
 
-    $announcement = Announcement::create(['name' => 'announcement One']);
+    $announcement = Announcement::create([
+        'user_id' => $user->id,
+        'category_id' => $category->id,
+        'title' => 'Announcement Teste',
+        'description' => 'Description Teste',
+        'method_receipt' => 'recevied',
+        'price' => '10.30'
+    ]);
 
-    Livewire::test(All::class)
-        ->assertSee('announcement One')
-        ->assertSeeLivewire(Update::class);
-
-    Livewire::test(Update::class, ['announcement' => $announcement])
+    Livewire::test(Update::class, ['announcement_id' => $announcement->id])
         ->toggle('modal', true)
-        ->assertSeeText('Editar Categoria');
+        ->assertSeeText('Editar Anuncio');
 });
 todo('check is message error in update announcement', function () {
 

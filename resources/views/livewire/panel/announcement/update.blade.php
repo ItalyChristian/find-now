@@ -1,6 +1,6 @@
 <div>
     <x-button.circle color="blue" icon="pencil" wire:click="$toggle('modal')" />
-    <x-modal title="Cadastrar Anuncio" size="5xl" blur wire persistent>
+    <x-modal title="Editar Anuncio" size="5xl" blur wire persistent>
 
         <form wire:submit="update">
 
