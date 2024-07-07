@@ -5,7 +5,6 @@ use App\Models\Announcement;
 use App\Models\Category;
 use App\Models\User;
 use Livewire\Livewire;
-use TallStackUi\View\Components\Dropdown\Items;
 
 it('Check if route exists and user is logged in', function () {
 
