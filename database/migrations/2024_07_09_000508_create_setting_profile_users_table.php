@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('setting_profile_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name')->unique();
-            $table->boolean(true);
+            $table->string('slug')->unique();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
