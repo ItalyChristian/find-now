@@ -56,7 +56,15 @@ class User extends Authenticatable
 
         return $this->morphMany(Image::class, 'images');
     }
+    public function rating(): MorphMany
+    {
 
+        return $this->morphMany(Rating::class, 'ratings');
+    }
+    public function settingProfileUser()
+    {
+        return $this->hasOne(SettingProfileUser::class);
+    }
     public function address(): MorphMany
     {
 
